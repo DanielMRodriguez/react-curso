@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import '../assets/styles/App.scss';
@@ -6,47 +7,36 @@ import Categoria from '../components/Categoria';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
 import Footer from '../components/Footer';
+import useInitialState from '../hooks/InitialState';
+
+const API = 'http://localhost:3000/initalState';
 
 const App = () => {
-  const [videos, setVideos] = useState([]);
-  useEffect(() => {
-    fetch('http://localhost:3000/initalState')
-      .then((response) => response.json())
-      .then((data) => setVideos(data));
-  }, []);
-  if (videos.trends) {
-    var len = videos.mylist.length;
-    var mapa = videos.trends;
-  }
-  return (
-
+  const InitialState = useInitialState(API);
+  return InitialState.length === 0 ? <h1>Loading...</h1> : (
     <div className='App'>
       <Header />
       <Search />
-
-      {len > 0 && (
-        <Categoria title='Mi lista'>
-          <Categoria>
-            <CarouselItem />
-          </Categoria>
+      {InitialState.mylist.length > 0 && (
+        <Categoria title='Mi Lista'>
+          <Carousel>
+            {InitialState.mylist.map((item) => <CarouselItem key={item.id} {...item} />)}
+          </Carousel>
         </Categoria>
       )}
-
       <Categoria title='Tendencias'>
         <Carousel>
-          {
-            mapa.map((item) => {<CarouselItem key={item.id} {...item} />})
-          }
+          {InitialState.trends.map((item) => <CarouselItem key={item.id} {...item} />)}
         </Carousel>
       </Categoria>
-
-      <Categoria title='Originales de PlatziVideo'>
+      <Categoria title='Originales de Platzi Video'>
         <Carousel>
-          <CarouselItem />
+          {InitialState.originals.map((item) => <CarouselItem key={item.id} {...item} />)}
         </Carousel>
       </Categoria>
       <Footer />
     </div>
   );
 };
+
 export default App;
