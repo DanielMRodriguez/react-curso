@@ -1,6 +1,5 @@
 /* eslint-disable no-trailing-spaces */
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import '../assets/styles/App.scss';
 import Search from '../components/Search';
@@ -12,7 +11,7 @@ import useInitialState from '../hooks/InitialState';
 
 const API = 'http://localhost:3000/initalState';
 
-const App = () => {
+const Home = () => {
   const InitialState = useInitialState(API);
   return InitialState.length === 0 ? <h1>Loading...</h1> : (
     <div className='App'>
@@ -40,4 +39,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;
