@@ -1,5 +1,6 @@
 /* eslint-disable no-trailing-spaces */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import '../assets/styles/App.scss';
 import Search from '../components/Search';
