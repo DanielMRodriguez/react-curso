@@ -1,35 +1,39 @@
 /* eslint-disable no-trailing-spaces */
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import '../assets/styles/App.scss';
 import Search from '../components/Search';
 import Categoria from '../components/Categoria';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import useInitialState from '../hooks/InitialState';
 
-const API = 'http://localhost:3000/initalState';
-
-const Home = () => {
-  const InitialState = useInitialState(API);
-  return InitialState.length === 0 ? <h1>Loading...</h1> : (
+const Home = ({ myList, trends, originals }) => {
+  return (
     <>
       
       <Search />
-      {InitialState.mylist.length > 0 && (
+      {myList.length > 0 && (
         <Categoria title='Mi Lista'>
           <Carousel>
-            {InitialState.mylist.map((item) => <CarouselItem key={item.id} {...item} />)}
+            {myList.map((item) => (
+              <CarouselItem
+                key={item.id}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...item}
+                isList
+              />
+            ))}
           </Carousel>
         </Categoria>
       )}
       <Categoria title='Tendencias'>
         <Carousel>
-          {InitialState.trends.map((item) => <CarouselItem key={item.id} {...item} />)}
+          {trends.map((item) => <CarouselItem key={item.id} {...item} />)}
         </Carousel>
       </Categoria>
       <Categoria title='Originales de Platzi Video'>
         <Carousel>
-          {InitialState.originals.map((item) => <CarouselItem key={item.id} {...item} />)}
+          {originals.map((item) => <CarouselItem key={item.id} {...item} />)}
         </Carousel>
       </Categoria>
       
@@ -37,4 +41,12 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    myList: state.myList,
+    trends: state.trends,
+    originals: state.originals,
+  };
+};
+
+export default connect(mapStateToProps, null)(Home);
